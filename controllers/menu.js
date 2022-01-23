@@ -5,14 +5,14 @@ const Menu = require('../models/menu');
 
 function addMenu(req, res) {
     const { title, url, order, active } = req.body;
-    const Menu = new Menu();
+    const NewMenu = new Menu();
 
-    Menu.title = title;
-    Menu.url = url;
-    Menu.order = order;
-    Menu.active = active;
+    NewMenu.title = title;
+    NewMenu.url = url;
+    NewMenu.order = order;
+    NewMenu.active = active;
 
-    Menu.save((err, menuStored) => {
+    NewMenu.save((err, menuStored) => {
         if (err) {
             res.status(500).send({message: 'Error en el servidor.'});   
         } else {
@@ -43,19 +43,23 @@ function getMenus(req, res) {
 }
 
 function updateMenu(req, res) {
-    let menuData = req.body;
+    const menuData = req.body;
     const {id} = req.params;
 
-    Menu.findOneAndUpdate(id, menuData, (err, updatedMenu) => {
+    
+
+    Menu.findByIdAndUpdate(id, menuData, (err, updatedMenu) => {
         if (err) {
             res.status(500).send({message: 'Error en el servidor.'});
+        } else {
+            if (!updatedMenu) {
+                res.status(404).send({message: 'Menu no encontrado.'});
+            } else {
+                res.status(200).send({message: 'Menu actualizado correctamente.'});
+            }
         }
 
-        if (!updatedMenu) {
-            res.status(404).send({message: 'Menu no encontrado.'});
-        } else {
-            res.status(200).send({message: 'Menu actualizado correctamente.'});
-        }
+       
     });
 }
 
@@ -64,20 +68,22 @@ function activateMenu(req, res) {
     const {id} = req.params;
     const {active} = req.body;
 
-    Menu.findOneAndUpdate(id, {active}, (err, menuUpdated) => {
+
+    Menu.findByIdAndUpdate(id, {active}, (err, menuUpdated) => {
         if (err) {
             res.status(500).send({message: 'Error en el servidor.'});
-        }
-
-        if (!menuUpdated) {
-            res.status(404).send({message: 'Menu no encontrado.'});
         } else {
-            if (active) {
-                res.status(200).send({message: 'Menu activado correctamente.'});
+            if (!menuUpdated) {
+                res.status(404).send({message: 'Menu no encontrado.'});
             } else {
-                res.status(200).send({message: 'Menu desactivado correctamente.'});
+                if (active) {
+                    res.status(200).send({message: 'Menu activado correctamente.'});
+                } else {
+                    res.status(200).send({message: 'Menu desactivado correctamente.'});
+                }
             }
         }
+        
     });
 }
 
