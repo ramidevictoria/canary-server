@@ -1,15 +1,15 @@
 const {response} = require('express');
 const { Model } = require('mongoose');
-const Newsletter = require('../models/newsletter.js');
+const Newsletter = require('../models/newsletter');
 
 
 function addNewsletter(req, res) {
     const { email } = req.body;
-    const newsletter = new Newsletter();
+    const newnewsletter = new Newsletter();
 
-    newsletter.email = email;
+    newnewsletter.email = email.toLowerCase();
 
-    Newsletter.save((err, newsletterStored) => {
+    newnewsletter.save((err, newsletterStored) => {
         if (err) {
             res.status(500).send({message: 'Error en el servidor.'});
         } else {

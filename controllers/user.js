@@ -113,7 +113,7 @@ function getUsersActive(req, res) {
     User.find({active: query.active})
     .then(users => {
         if(!users) {
-            res.status(404).send({message: 'No se ha encontrado ningun usuario.'});  
+            res.status(404).send({message: 'No se ha encontrado ningun usuario activo.'});  
         } else {
             res.status(200).send({users});
         }
