@@ -6,7 +6,7 @@ const { API_VERSION, IP_SERVER, PORT_DB } = require("./config");
 mongoose.set('useFindAndModify', false);
 
 mongoose.connect(
-  `mongodb://${ IP_SERVER }:${ PORT_DB }/rami`,
+  'mongodb+srv://canary-user:mernudemy1234@canary.efzym.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, res) => {
     if (err) {
